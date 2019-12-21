@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>damageCompute BH3</title>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <style type="text/css">
+    body {
+      margin: 10px 0 0 50px;
+      min-width: 500px;
+    }
+    form {
+    }
+    form > div {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    label {
+      line-height: 1rem;
+      margin-bottom: 0;
+    }
+    select {
+      margin-right: 20px;
+    }
+    .listItem {
+      display: inline-block;
+    }
+    .modifyform input {
+      width: 50px;
+      height: 25px;
+      margin-left: 5px;
+      margin-right: 10px;
+    }
+    .modifyform div {
+      margin: 10px 0 10px 0;
+    }
+
+  </style>
+  <script type="text/javascript">
+    var Valkyries = [      
+      {
+        "name": "blank",
+        "physic": 0,
+        "element_fire": 0,
+        "element_ice": 0,
+        "element_lightening": 0,
+        "total": 0,
+        "critical": 0,
+        "critical_rate": 0,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0,
+        "element_percent": 0
+      },
+      {
+        "name": "moonlight",
+        "physic": 0.3,
+        "element_fire": 0,
+        "element_ice": 0,
+        "element_lightening": 0,
+        "total": 0,
+        "critical": 0,
+        "critical_rate": 0,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0,
+        "element_percent": 0
+      },
+      {
+        "name": "truthRuler",
+        "physic": 0,
+        "element_fire": 0,
+        "element_ice": 0.7,
+        "element_lightening": 0,
+        "total": 0.5,
+        "critical": 0,
+        "critical_rate": 0,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0,
+        "element_percent": 0
+      }
+    ]
+
+    var Weapons = [      
+      {
+        "name": "blank",
+        "physic": 0,
+        "element_fire": 0,
+        "element_ice": 0,
+        "element_lightening": 0,
+        "total": 0,
+        "critical": 0,
+        "critical_rate": 0,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0
+      },
+      {
+        "name": "positronGun",
+        "physic": 0.2,
+        "element_fire": 0,
+        "element_ice": 0,
+        "element_lightening": 0,
+        "total": 0,
+        "critical": 0.4,
+        "critical_rate": 0,
+        "physic_sensitivity": 0.2,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0
+      },
+      {
+        "name": "truthKey",
+        "physic": 0,
+        "element_fire": 0,
+        "element_ice": 0.4,
+        "element_lightening": 0,
+        "total": 0,
+        "critical": 0,
+        "critical_rate": 0,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0
+      }
+    ]
+
+    var ImprintUs = [      
+      {
+        "name": "blank",
+        "physic": 0,
+        "element_fire": 0,
+        "element_ice": 0,
+        "element_lightening": 0,
+        "total": 0,
+        "critical": 0,
+        "critical_rate": 0,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0
+      },
+      {
+        "name": "Tesla",
+        "physic": 0,
+        "element_fire": 0,
+        "element_ice": 0,
+        "element_lightening": 0,
+        "total": 0.51,
+        "critical": 0,
+        "critical_rate": 0,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0
+      },
+      {
+        "name": "Walt",
+        "physic": 0,
+        "element_fire": 0,
+        "element_ice": 0.7,
+        "element_lightening": 0,
+        "total": 0,
+        "critical": 0,
+        "critical_rate": 0,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0
+      }
+    ]
+
+    var ImprintMs = [      
+      {
+        "name": "blank",
+        "physic": 0,
+        "element_fire": 0,
+        "element_ice": 0,
+        "element_lightening": 0,
+        "total": 0,
+        "critical": 0,
+        "critical_rate": 0,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0
+      },
+      {
+        "name": "Xuanyuan_dark",
+        "physic": 0,
+        "element_fire": 0,
+        "element_ice": 0,
+        "element_lightening": 0,
+        "total": 0,
+        "critical": 0,
+        "critical_rate": 0.3,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0
+      },
+      {
+        "name": "Walt",
+        "physic": 0,
+        "element_fire": 0,
+        "element_ice": 0.2,
+        "element_lightening": 0,
+        "total": 0,
+        "critical": 0,
+        "critical_rate": 0,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0.2,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0
+      }
+    ]
+
+    var ImprintBs = [      
+      {
+        "name": "blank",
+        "physic": 0,
+        "element_fire": 0,
+        "element_ice": 0,
+        "element_lightening": 0,
+        "total": 0,
+        "critical": 0,
+        "critical_rate": 0,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0
+      },
+      {
+        "name": "EgyptQueen",
+        "physic": 0,
+        "element_fire": 0,
+        "element_ice": 0,
+        "element_lightening": 0,
+        "total": 0.82,
+        "critical": 0,
+        "critical_rate": 0,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0
+      },
+      {
+        "name": "Walt",
+        "physic": 0,
+        "element_fire": 0,
+        "element_ice": 0,
+        "element_lightening": 0,
+        "total": 0.2,
+        "critical": 0,
+        "critical_rate": 0,
+        "physic_sensitivity": 0,
+        "element_fire_sensitivity": 0,
+        "element_ice_sensitivity": 0,
+        "element_lightening_sensitivity": 0,
+        "total_sensitivity": 0
+      }
+    ]
+
+  </script>
+
+
+</head>
+<body>
+  <div id="Instruction">
+    <p>说明：由于实战情况复杂，请自行确定角色当前所处状态。默认数值（buffInfo.json）均为最大加成，可自行在修改栏中进行数据调整，以进行比对或微调。计算结果为buff综合，不代表最终伤害（如怪物抗性、克制情况等，均会造成影响），仅供配装参考。</p>
+    <p>注：暴击计算的是期望，如果要凹暴击，请把暴击率拉满。默认会心0，如填会心，默认女武神等级80。</p>
+  </div>
+  <form>
+    <h3>State1</h3>
+    <div class="initialform">
+      <div class="listItem">
+        <label for="valkyrie">女武神</label>
+        <select class="valkyrie" id="v1">
+          <option value="blank">--</option>   
+          <option value="moonlight">月光</option>
+          <option value="truthRuler">理之律者</option>
+        </select>
+      </div>
+
+      <div class="listItem">
+        <label for="weapon">武器</label>
+        <select class="weapon" id="w1">
+          <option value="blank">--</option>        
+          <option value="positronGun">阳电子手炮</option>
+          <option value="truthKey">真理之钥</option>      
+        </select>
+      </div>
+
+      <div class="listItem">
+        <label for="imprintU">圣痕(上)</label>
+        <select class="imprintU" id="iU1">
+          <option value="blank">--</option>   
+          <option value="Tesla">特斯拉</option>
+          <option value="Walt">瓦尔特</option>      
+        </select>
+      </div>
+     
+      <div class="listItem">
+        <label for="imprintM">圣痕(中)</label>
+        <select class="imprintM" id="iM1">
+          <option value="blank">--</option>   
+          <option value="Xuanyuan_dark">黑轩辕</option>
+          <option value="Walt">瓦尔特</option>      
+        </select>
+      </div>
+
+      <div class="listItem">
+        <label for="imprintB">圣痕(下)</label>
+        <select class="imprintB" id="iB1">
+          <option value="blank">--</option>   
+          <option value="EgyptQueen">艳后</option>
+          <option value="Walt">瓦尔特</option>      
+        </select>
+      </div>
+    </div>
+
+    <div class="modifyform">
+      <div>
+        <span>攻击力</span><input type="text" id="attackModify">
+        <span>会心</span><input type="text" id="heartAttackModify">
+        <span>物理</span><input type="text" id="physicModify">
+        <span>爆伤</span><input type="text" id="criticalModify">
+        <span>暴击率</span><input type="text" id="critical_rateModify">      
+        <span>物理易伤</span><input type="text" id="physic_sensitivityModify">
+      </div>
+      <div>
+        <span>元素比</span><input type="text" id="element_percentModify">
+        <span>火焰</span><input type="text" id="element_fireModify">
+        <span>冰冻</span><input type="text" id="element_iceModify">
+        <span>雷电</span><input type="text" id="element_lighteningModify">
+        <span>火易伤</span><input type="text" id="element_fire_sensitivityModify">
+        <span>冰冻易伤</span><input type="text" id="element_ice_sensitivityModify">
+        <span>雷易伤</span><input type="text" id="element_lightening_sensitivityModify">
+      </div>
+      <div>
+        <span>全伤害</span><input type="text" id="totalModify">
+        <span>全易伤</span><input type="text" id="total_sensitivityModify">
+      </div>
+    </div>
+
+    <div class="result">
+      <span>物理伤害：</span><input type="text" id="r_physic">
+      <span>元素伤害：</span><input type="text" id="r_element">
+    </div>
+  </form>
+
+  <script type="text/javascript">
+    function Compute() {
+      var lenV = Valkyries["length"], lenW = Weapons["length"], 
+          lenIU = ImprintUs["length"], lenIM = ImprintMs["length"], lenIB = ImprintBs["length"];
+      var physic = 0, element_fire = 0, element_ice = 0, element_lightening = 0, total = 0, critical = 0, critical_rate = 0, physic_sensitivity = 0,
+          element_fire_sensitivity = 0, element_ice_sensitivity = 0, element_lightening_sensitivity = 0, total_sensitivity = 0, element_percent = 0;
+      var attack = 1, heartAttack = 0;
+      var valkyrie = v1.value;
+      var weapon = w1.value;
+      var imprintu = iU1.value, imprintm = iM1.value, imprintb = iB1.value;
+
+      for (i = 0; i < lenV; i++) {
+        if (valkyrie == Valkyries[i].name) {
+            physic += eval(Valkyries[i].physic);
+            element_fire += eval(Valkyries[i].element_fire);
+            element_ice += eval(Valkyries[i].element_ice);
+            element_lightening += eval(Valkyries[i].element_lightening);
+            total += eval(Valkyries[i].total);
+            critical += eval(Valkyries[i].critical);
+            critical_rate += eval(Valkyries[i].critical_rate);
+            physic_sensitivity += eval(Valkyries[i].physic_sensitivity);
+            element_fire_sensitivity += eval(Valkyries[i].element_fire_sensitivity);
+            element_ice_sensitivity += eval(Valkyries[i].element_ice_sensitivity);
+            element_lightening_sensitivity += eval(Valkyries[i].element_lightening_sensitivity);
+            total_sensitivity += eval(Valkyries[i].total_sensitivity);
+            element_percent += eval(Valkyries[i].element_percent)
+        }
+      };
+      for (i = 0; i < lenW; i++) {
+        if (weapon == Weapons[i].name) {
+            physic += eval(Weapons[i].physic);
+            element_fire += eval(Weapons[i].element_fire);
+            element_ice += eval(Weapons[i].element_ice);
+            element_lightening += eval(Weapons[i].element_lightening);
+            total += eval(Weapons[i].total);
+            critical += eval(Weapons[i].critical);
+            critical_rate += eval(Weapons[i].critical_rate);
+            physic_sensitivity += eval(Weapons[i].physic_sensitivity);
+            element_fire_sensitivity += eval(Weapons[i].element_fire_sensitivity);
+            element_ice_sensitivity += eval(Weapons[i].element_ice_sensitivity);
+            element_lightening_sensitivity += eval(Weapons[i].element_lightening_sensitivity);
+            total_sensitivity += eval(Weapons[i].total_sensitivity);
+        }
+      };
+      for (i = 0; i < lenIU; i++) {
+        if (imprintu == ImprintUs[i].name) {
+            physic += eval(ImprintUs[i].physic);
+            element_fire += eval(ImprintUs[i].element_fire);
+            element_ice += eval(ImprintUs[i].element_ice);
+            element_lightening += eval(ImprintUs[i].element_lightening);
+            total += eval(ImprintUs[i].total);
+            critical += eval(ImprintUs[i].critical);
+            critical_rate += eval(ImprintUs[i].critical_rate);
+            physic_sensitivity += eval(ImprintUs[i].physic_sensitivity);
+            element_fire_sensitivity += eval(ImprintUs[i].element_fire_sensitivity);
+            element_ice_sensitivity += eval(ImprintUs[i].element_ice_sensitivity);
+            element_lightening_sensitivity += eval(ImprintUs[i].element_lightening_sensitivity);
+            total_sensitivity += eval(ImprintUs[i].total_sensitivity);
+        }
+      };
+      for (i = 0; i < lenIM; i++) {
+        if (imprintm == ImprintMs[i].name) {
+            physic += eval(ImprintMs[i].physic);
+            element_fire += eval(ImprintMs[i].element_fire);
+            element_ice += eval(ImprintMs[i].element_ice);
+            element_lightening += eval(ImprintMs[i].element_lightening);
+            total += eval(ImprintMs[i].total);
+            critical += eval(ImprintMs[i].critical);
+            critical_rate += eval(ImprintMs[i].critical_rate);
+            physic_sensitivity += eval(ImprintMs[i].physic_sensitivity);
+            element_fire_sensitivity += eval(ImprintMs[i].element_fire_sensitivity);
+            element_ice_sensitivity += eval(ImprintMs[i].element_ice_sensitivity);
+            element_lightening_sensitivity += eval(ImprintMs[i].element_lightening_sensitivity);
+            total_sensitivity += eval(ImprintMs[i].total_sensitivity);
+        }
+      };
+      for (i = 0; i < lenIB; i++) {
+        if (imprintb == ImprintBs[i].name) {
+            physic += eval(ImprintBs[i].physic);
+            element_fire += eval(ImprintBs[i].element_fire);
+            element_ice += eval(ImprintBs[i].element_ice);
+            element_lightening += eval(ImprintBs[i].element_lightening);
+            total += eval(ImprintBs[i].total);
+            critical += eval(ImprintBs[i].critical);
+            critical_rate += eval(ImprintBs[i].critical_rate);
+            physic_sensitivity += eval(ImprintBs[i].physic_sensitivity);
+            element_fire_sensitivity += eval(ImprintBs[i].element_fire_sensitivity);
+            element_ice_sensitivity += eval(ImprintBs[i].element_ice_sensitivity);
+            element_lightening_sensitivity += eval(ImprintBs[i].element_lightening_sensitivity);
+            total_sensitivity += eval(ImprintBs[i].total_sensitivity);
+        }
+      };
+
+      if (attackModify.value != "")  {attack = eval(attackModify.value)};
+      if (critical_rateModify.value != "") {critical_rate += eval(critical_rateModify.value);};
+      if (heartAttackModify.value != "") {
+        heartAttack = eval(heartAttackModify.value);
+        critical_rate += heartAttack/475;
+      };
+      if (critical_rate > 1) {critical_rate = 1};
+
+      if (physicModify.value != "")  {physic += eval(physicModify.value)};
+      if (totalModify.value != "")  {total += eval(totalModify.value)};
+      if (physic_sensitivityModify.value != "")  {physic_sensitivity += eval(physic_sensitivityModify.value)};
+      if (criticalModify.value != "")  {critical += eval(criticalModify.value)};
+      if (total_sensitivityModify.value != "")  {total_sensitivity += eval(total_sensitivityModify.value)};
+
+      damage_physic_basic = attack * (1 + physic) * (1 + total) * (1 + physic_sensitivity) * (1 + total_sensitivity);
+      damage_physic_mean = damage_physic_basic * (2 * (1 + critical)) * critical_rate + damage_physic_basic * (1 - critical_rate);
+      r_physic.value = damage_physic_mean;
+
+      if (element_fireModify.value != "")  {element_fire += eval(element_fireModify.value)};
+      if (element_iceModify.value != "")  {element_ice += eval(element_iceModify.value)};
+      if (element_lighteningModify.value != "")  {element_lightening += eval(element_lighteningModify.value)};
+      if (element_fire_sensitivityModify.value != "")  {element_fire_sensitivity += eval(element_fire_sensitivityModify.value)};
+      if (element_ice_sensitivityModify.value != "")  {element_ice_sensitivity += eval(element_ice_sensitivityModify.value)};
+      if (element_lightening_sensitivityModify.value != "")  {element_lightening_sensitivity += eval(element_lightening_sensitivityModify.value)};
+      if (element_percentModify.value != "")  {element_percent = eval(element_percentModify.value)};
+
+      damage_element_fire = attack * element_percent *(1 + element_fire) * (1 + total) * (1 + element_fire_sensitivity) * (1 + total_sensitivity)
+      damage_element_ice = attack * element_percent * (1 + element_ice) * (1 + total) * (1 + element_ice_sensitivity) * (1 + total_sensitivity)
+      damage_element_lightening = attack * element_percent * (1 + element_lightening) * (1 + total) * (1 + element_lightening_sensitivity) * (1 + total_sensitivity)
+
+      damage_element = Math.max(damage_element_fire, damage_element_ice, damage_element_lightening);
+      r_element.value = damage_element;
+
+    }
+  </script>
+
+  <button onclick="Compute()">Compute</button>
+  <button>Add Row</button>
+  <button>Add State</button>
+
+</body>
+</html>
